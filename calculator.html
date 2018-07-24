@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./calculator.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.0/redux.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <span style="font-size: 30px">CALCULATOR</span>
+        <div class="result">
+            <!-- <input type="box" id="result"> -->
+            <span class="result" id="result"></span>
+        </div>
+        <div class="buttons">
+            <p>
+                <input type="button" value="7" onclick='setVal("7")'>
+                <input type="button" value="8" onclick='setVal("8")'>
+                <input type="button" value="9" onclick='setVal("9")'>
+                <input type="button" value="*" onclick='setVal("*")'>
+            </p>
+            <p>
+                <input type="button" value="4" onclick='setVal("4")'>
+                <input type="button" value="5" onclick='setVal("5")'>
+                <input type="button" value="6" onclick='setVal("6")'>
+                <input type="button" value="-" onclick='setVal("-")'>
+            </p>
+            <p>
+                <input type="button" value="1" onclick='setVal("1")'>
+                <input type="button" value="2" onclick='setVal("2")'>
+                <input type="button" value="3" onclick='setVal("3")'>
+                <input type="button" value="+" onclick='setVal("+")'>
+            </p>
+            <p>
+                <input type="button" value="0" onclick='setVal("0")'>
+                <input type="button" value="." onclick='setVal(".")'>
+                <input type="button" value="C" onclick='reset("")'>
+                <input type="button" value="=" onclick='calculation("")'>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const result = document.getElementById('result');
+
+        const INITIAL_VALUE_STATE = {
+            value: '0'
+        }
+
+        result.innerHTML = INITIAL_VALUE_STATE.value;
+
+        //ACTIONS
+
+        const resetValue = () => {
+            return (
+                {
+                    type: 'RESET_VALUE',
+                    payload: {
+                        value: INITIAL_VALUE_STATE.value
+                    }
+                }
+            );
+        }
+        const setValue = (key) => {
+            return (
+                {
+                    type: 'SET_VALUE',
+                    payload: {
+                        value: key
+                    }
+                }
+
+            );
+        }
+        const evaluateValue = () => {
+            
+            return (
+                {
+                    type: 'EVALUATE_VALUE',
+                }
+            );
+        }
+
+        //REDUCER FUNCTIONS
+
+        const myReducer = (state = INITIAL_VALUE_STATE, action) => {
+            switch (action.type) {
+                case 'RESET_VALUE':
+                    return Object.assign({}, {value:action.payload.value});
+
+                case 'SET_VALUE':
+                    return { ...state, value: state.value === '0' ? action.payload.value : state.value + action.payload.value }
+
+                case 'EVALUATE_VALUE':
+                    console.log("value",state.value);
+                    return Object.assign({}, { value: eval(state.value) });
+                default:
+                    return state;
+            }
+        }
+
+
+        const myStore = Redux.createStore(myReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({
+            serialize: true
+        }));
+
+        myStore.subscribe(() => {
+            result.innerHTML = myStore.getState().value;
+        });
+
+
+
+        setVal = (key) => {
+            console.log(key);
+            myStore.dispatch(setValue(key));
+        }
+
+        reset = () => {
+            myStore.dispatch(resetValue());
+        }
+
+        calculation = () =>{
+            myStore.dispatch(evaluateValue());
+        }
+       
+    </script>
+</body>
+
+</html>

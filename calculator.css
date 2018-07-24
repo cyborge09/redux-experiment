@@ -1,0 +1,23 @@
+.calculator{
+    color: black;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    background-color: grey
+
+}
+
+.result
+{
+    width: 80%;
+    margin: 0 auto;
+    background-color: white;
+    text-align-last: right;
+    padding-right: 5px;
+}
+
+.buttons
+{
+    width: 100%;
+    margin-left: 25px;
+}
