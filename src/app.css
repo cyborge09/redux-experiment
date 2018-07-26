@@ -1,0 +1,57 @@
+body, html {
+  margin: 0;
+}
+
+body {
+  font-family: Verdana, serif;
+  background-color: #EEEEEE;
+  font-size: 20px;
+}
+
+.grid, .panel {
+  padding-top: 20px;
+  width: 306px;
+  text-align: center;
+  margin: auto;
+  clear: both;
+}
+
+.button {
+  padding: 20px 40px;
+  background-color: #555555;
+  color: #FFFFFF;
+
+}
+
+.tile {
+  background-color: black;
+  width: 100px;
+  height: 100px;
+  margin: 1px;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 40px;
+  float: left;
+  line-height: 100px;
+
+}
+
+.wintile{
+  background-color:red;
+  width: 100px;
+  height: 100px;
+  margin: 1px;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 40px;
+  float: left;
+  line-height: 100px;
+}
+
+
+.display {
+  font-size: 30px;
+  text-align: center;     
+  margin-top: 190px;
+
+}
