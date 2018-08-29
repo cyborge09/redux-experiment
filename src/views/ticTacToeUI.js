@@ -1,7 +1,10 @@
-import React from 'react';
-import Tile from '../components/Tile';
-import Button from '../components/Button';
-import Display from '../components/Display';
+import React from "react";
+import Tile from "../components/Tile";
+import Button from "../components/Button";
+import Display from "../components/Display";
+import sentry from "sentry-node-module";
+
+let uniqueKey = "";
 
 //statefull
 // class TicTacToe extends React.Component {
@@ -35,40 +38,63 @@ import Display from '../components/Display';
 // }
 
 //stateless
-const TicTacToe = ({ player, tiles = [], message, winnerTile, onSetTile = f => f,onChangeTile = f => f, onReset = f => f }) => {
-    
-    return (
-        <div>
-            <div className="grid">
-                {
-                    tiles.map((value, tile) => (
-                        <Tile key={tile}
-                            index = {tile}
-                            state={value}
-                            onClick={() => {
-                                onSetTile(tile, tiles, player);
-                                onChangeTile(tile, tiles, player);
-                            }}
-                           
+const onChange = e => {
+  uniqueKey = e.target.value;
+};
 
-                            winningTile = {winnerTile}
-                        />
-                    ))
-                }
-            </div>
+const configureUniquekey = () => {
+  sentry.configure(uniqueKey);
+};
 
-            <Display message={message} />
+const TicTacToe = ({
+  player,
+  tiles = [],
+  message,
+  winnerTile,
+  onSetTile = f => f,
+  onChangeTile = f => f,
+  onReset = f => f
+}) => {
+  return (
+    <div>
+      <div className="grid">
+        {tiles.map((value, tile) => (
+          <Tile
+            key={tile}
+            index={tile}
+            state={value}
+            onClick={() => {
+              onSetTile(tile, tiles, player);
+              onChangeTile(tile, tiles, player);
+            }}
+            winningTile={winnerTile}
+          />
+        ))}
+      </div>
 
-            <div className="panel">
-                <Button
-                    onClick={() => {
-                        onReset()
-                    }}
-                />
-            </div>
-        </div>
-    )
+      <Display message={message} />
 
-}
+      <div className="panel">
+        <Button
+          onClick={() => {
+            try {
+              onReset();
+              throw new Error("Error on Reset Button");
+            } catch (err) {
+              // sentry.configure("ee565a99-8778-40eb-aa7a-e7f04a03c845");
+              sentry.log({
+                message: "message for sentry test",
+                error: err
+              });
+            }
+          }}
+        />
 
-export default TicTacToe
+        <input onChange={onChange} placeholder="Unique KEY" />
+        <button onClick={configureUniquekey}>SET</button>
+      </div>
+    </div>
+  );
+};
+
+export default TicTacToe;
